@@ -171,3 +171,36 @@ Challenges as Data Volume Grows ->
     3. Expensive sorting - similar to slow reads.
         Solutions - store the notifications already in sorted form.
         Ex - ORDER BY created_at DESC
+
+# Stage 3
+
+Query - 
+    SELECT *
+    FROM notifications
+    WHERE studentID = 1042
+    AND isRead = false
+    ORDER BY createdAt ASC;
+
+Is this query accurate?
+    Yes, the query is accurate, it returns all the  unread notifications for student with id 1042.
+    But, it is not optimal or efficient for 50,000 or 5,000,000 students.
+
+Why is this query slow?
+    1. SELECT * - query retrieve every column, even though we only neeed few.
+    2. No pagination - without it, this query returns all the notifications at the same time.
+    3. Cost of Sorting - without any indexes, this will be very tough and difficult.
+
+Improvements ->
+    SELECT
+        id,
+        notification_type,
+        message,
+        created_at
+    FROM notifications
+    WHERE student_id = 1042
+    AND is_read = FALSE
+    ORDER BY created_at DESC
+    LIMIT 50;
+
+    1. Here we dont retrieve every column, only the ones we need.
+    2. And we added pagination with LIMIT 50;
